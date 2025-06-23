@@ -1,0 +1,51 @@
+
+# ────────────────── Python / Django ──────────────────
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# виртуальное окружение
+.venv/
+env/
+venv/
+
+# переменные окружения / секреты
+.env
+.env.*
+
+# миграционные бэкапы SQLite
+*.sqlite3
+*.sqlite
+
+# ────────────────── IDE / редакторы ──────────────────
+# JetBrains (PyCharm, WebStorm…)
+.idea/
+# VS Code
+.vscode/
+# Sublime
+*.sublime-*
+
+# ────────────────── OS-мусор ──────────────────
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+# macOS Spotlight
+*.AppleDouble
+# macOS resource forks
+*.com.apple.*
+
+# ────────────────── Frontend ──────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ────────────────── Логи / временные файлы ──────────────────
+*.log
+*.tmp
+*.swp
+*.bak
+

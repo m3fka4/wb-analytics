@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Product Analytics{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'css/globals.css' %}">
+
+  <link rel="stylesheet" href="{% static 'analytics/css/styles.css' %}">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Сервис аналитики товаров</h1>
+    <nav>
+      <a href="{% url 'product_list' %}">Товары</a>
+
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}
+
+    {% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; tg @fckw00ds</p>
+  </footer>
+
+</body>
+</html>

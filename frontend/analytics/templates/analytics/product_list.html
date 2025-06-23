@@ -1,0 +1,110 @@
+{# frontend/analytics/templates/analytics/product_list.html #}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Аналитика товаров{% endblock %}
+
+{% block content %}
+<h1>Аналитика товаров</h1>
+
+<form id="filtersForm" method="get" class="filters-form">
+  {# ─────────── ЦЕНА ─────────── #}
+  <div class="filter-row">
+    <label for="min_price">Мин. цена, ₽:</label>
+    <input type="number" id="min_price" name="min_price"
+           min="0" step="1"
+           value="{{ request.GET.min_price|default:0 }}">
+  </div>
+
+  <div class="filter-row">
+    <label for="max_price">Макс. цена, ₽:</label>
+    <input type="number" id="max_price" name="max_price"
+           min="0" step="1"
+           value="{{ request.GET.max_price|default:20000 }}">
+  </div>
+
+
+  <div class="filter-row">
+    <label for="min_rating">Мин. рейтинг:</label>
+    <select id="min_rating" name="min_rating">
+      {% for r in "012345"|make_list %}
+        <option value="{{ r }}"
+                {% if request.GET.min_rating == r %}selected{% endif %}>
+          {{ r }}+
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="filter-row">
+    <label for="min_reviews">Мин. отзывов:</label>
+    <input type="number" id="min_reviews" name="min_reviews"
+           min="0" step="1"
+           value="{{ request.GET.min_reviews|default:0 }}">
+  </div>
+
+
+  <div class="filter-row">
+    <label for="sort_by">Сортировка:</label>
+    <select id="sort_by" name="sort_by">
+      <option value="">— по умолчанию —</option>
+
+      <option value="price_asc"   {% if request.GET.sort_by == 'price_asc'   %}selected{% endif %}>Цена ↑</option>
+      <option value="price_desc"  {% if request.GET.sort_by == 'price_desc'  %}selected{% endif %}>Цена ↓</option>
+
+      <option value="rating_asc"  {% if request.GET.sort_by == 'rating_asc'  %}selected{% endif %}>Рейтинг ↑</option>
+      <option value="rating_desc" {% if request.GET.sort_by == 'rating_desc' %}selected{% endif %}>Рейтинг ↓</option>
+
+      <option value="reviews_asc"  {% if request.GET.sort_by == 'reviews_asc'  %}selected{% endif %}>Отзывы ↑</option>
+      <option value="reviews_desc" {% if request.GET.sort_by == 'reviews_desc' %}selected{% endif %}>Отзывы ↓</option>
+
+      <option value="name_asc"   {% if request.GET.sort_by == 'name_asc'   %}selected{% endif %}>Название ↑</option>
+      <option value="name_desc"  {% if request.GET.sort_by == 'name_desc'  %}selected{% endif %}>Название ↓</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn-apply">Применить</button>
+</form>
+
+
+<table class="products-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Цена, ₽</th>
+      <th>Цена со скидкой, ₽</th>
+      <th>Рейтинг</th>
+      <th>Отзывы</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in products %}
+      <tr data-id="{{ p.id }}">
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>{{ p.price }}</td>
+        <td>{{ p.discounted_price|default:"–" }}</td>
+        <td>{{ p.rating|default:"–" }}</td>
+        <td>{{ p.reviews_count|default:"0" }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6">Товары не найдены</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<div class="charts-container">
+  <div class="chart-block">
+    <h2>Гистограмма цен</h2>
+    <canvas id="priceHistogram"></canvas>
+  </div>
+  <div class="chart-block">
+    <h2>Скидка vs Рейтинг</h2>
+    <canvas id="discountRatingChart"></canvas>
+  </div>
+</div>
+
+<script src="{% static 'analytics/js/charts.js' %}"></script>
+{% endblock %}
